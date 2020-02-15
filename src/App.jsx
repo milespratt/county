@@ -8,9 +8,9 @@ import Themer from "./components/Themer/Themer";
 
 function App() {
   // The currently selected date
-  const [selectedDate, setSelectedDate] = useState(
-    new Date(new Date(new Date().setSeconds(0)).setMilliseconds(0))
-  );
+  // const [selectedDate, setSelectedDate] = useState(
+  //   new Date(new Date(new Date().setSeconds(0)).setMilliseconds(0))
+  // );
 
   // the event being created/edited
   const [currentEvent, setCurrentEvent] = useState(undefined);
@@ -78,9 +78,7 @@ function App() {
               if (a.endDate.getTime() > b.endDate.getTime()) {
                 return 1;
               }
-              if (a.endDate.getTime() === b.endDate.getTime()) {
-                return 0;
-              }
+              return 0;
             })
             .map(countDown => {
               return (
@@ -92,7 +90,7 @@ function App() {
                   theme={currentTheme}
                   countdownDate={countDown.endDate}
                   selectedDate={countDown.endDate}
-                  setSelectedDate={setSelectedDate}
+                  // setSelectedDate={setSelectedDate}
                   setCurrentEvent={setCurrentEvent}
                 />
               );

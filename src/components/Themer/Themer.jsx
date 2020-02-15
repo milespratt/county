@@ -91,9 +91,7 @@ export default function Themer({ currentTheme, changeTheme }) {
             if (a < b) {
               return -1;
             }
-            if (a === b) {
-              return 0;
-            }
+            return 0;
           })
           .map((key, i) => {
             return (
@@ -141,9 +139,7 @@ export default function Themer({ currentTheme, changeTheme }) {
               if (a < b) {
                 return -1;
               }
-              if (a === b) {
-                return 0;
-              }
+              return 0;
             })
             .map((themeName, i) => {
               return (

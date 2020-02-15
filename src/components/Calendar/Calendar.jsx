@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, createRef } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  createRef,
+  useCallback
+} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Slider from "rc-slider";
@@ -6,7 +12,7 @@ import "rc-slider/assets/index.css";
 
 import CalendarStyles from "./Calendar.styles";
 
-import { formatTime, formatDate } from "../Countdown/Countdown";
+import { formatTime } from "../Countdown/Countdown";
 
 export default function Calendar({
   addCountdown,
@@ -28,6 +34,13 @@ export default function Calendar({
     )
   );
   const [selectedDate, setSelectedDate] = useState(undefined);
+  const checkSelectorDisplay = useCallback(() => {
+    const showSelector =
+      selectedDate &&
+      selectedDate.getMonth() === visibleDate.getMonth() &&
+      selectedDate.getFullYear() === visibleDate.getFullYear();
+    return showSelector;
+  }, [selectedDate, visibleDate]);
   const [selectorShown, setSelectorShown] = useState(checkSelectorDisplay());
   const [timeRemaining, setTimeRemaining] = useState(selectedDate - Date.now());
   const [past, setPast] = useState(false);
@@ -36,6 +49,52 @@ export default function Calendar({
   const selector = useRef(null);
   const calendarRef = useRef(null);
   const dayRefs = useRef(new Array(31).fill(undefined).map(() => createRef()));
+
+  const getDaysInMonth = useCallback(() => {
+    const days = new Date(
+      visibleDate.getFullYear(),
+      visibleDate.getMonth() + 1,
+      0
+    ).getDate();
+    return days;
+  }, [visibleDate]);
+
+  const checkSelectedDateEquality = useCallback(
+    (day, date) => {
+      const dateToCheck = date || new Date(new Date(visibleDate).setDate(day));
+      return (
+        selectedDate &&
+        selectedDate.getFullYear() === dateToCheck.getFullYear() &&
+        selectedDate.getMonth() === dateToCheck.getMonth() &&
+        selectedDate.getDate() === dateToCheck.getDate() &&
+        selectedDate.getDay() === dateToCheck.getDay()
+      );
+    },
+    [selectedDate, visibleDate]
+  );
+
+  const moveSelector = useCallback(
+    spot => {
+      if (!selectorShown) {
+        setSelectorShown(checkSelectorDisplay());
+      }
+      const position = spot.getBoundingClientRect();
+      const calpos = calendarRef.current.getBoundingClientRect();
+      selector.current.style.transition =
+        "all 150ms ease, background 150ms ease";
+      selector.current.style.opacity = "1";
+      selector.current.style.top = `${position.top -
+        calpos.top +
+        (window.innerWidth > 1080 ? 5 : 2)}px`;
+      selector.current.style.left = `${position.left -
+        calpos.left +
+        (window.innerWidth > 1080 ? 5 : 2)}px`;
+      setTimeout(() => {
+        selector.current.style.transition = "background 150ms ease";
+      }, 150);
+    },
+    [checkSelectorDisplay, selectorShown]
+  );
 
   // LIFECYCLE
   useEffect(() => {
@@ -64,7 +123,7 @@ export default function Calendar({
         }
       });
     }
-  }, [selectorShown]);
+  }, [selectorShown, checkSelectedDateEquality, moveSelector]);
 
   useEffect(() => {
     dayRefs.current.forEach((ref, i) => {
@@ -76,7 +135,13 @@ export default function Calendar({
       }
     });
     setSelectorShown(checkSelectorDisplay());
-  }, [visibleDate]);
+  }, [
+    visibleDate,
+    checkSelectedDateEquality,
+    moveSelector,
+    checkSelectorDisplay,
+    getDaysInMonth
+  ]);
 
   // CALENDAR NAVIGATION
   function changeMonthBack() {
@@ -136,13 +201,13 @@ export default function Calendar({
     return dateToCheck.getTime() < today.getTime();
   }
 
-  function checkSelectorDisplay() {
-    const showSelector =
-      selectedDate &&
-      selectedDate.getMonth() === visibleDate.getMonth() &&
-      selectedDate.getFullYear() === visibleDate.getFullYear();
-    return showSelector;
-  }
+  // function checkSelectorDisplay() {
+  //   const showSelector =
+  //     selectedDate &&
+  //     selectedDate.getMonth() === visibleDate.getMonth() &&
+  //     selectedDate.getFullYear() === visibleDate.getFullYear();
+  //   return showSelector;
+  // }
 
   function dateEqualToToday(dateToCheck) {
     const today = new Date(
@@ -160,45 +225,45 @@ export default function Calendar({
     );
   }
 
-  function checkSelectedDateEquality(day, date) {
-    const dateToCheck = date || new Date(new Date(visibleDate).setDate(day));
-    return (
-      selectedDate &&
-      selectedDate.getFullYear() === dateToCheck.getFullYear() &&
-      selectedDate.getMonth() === dateToCheck.getMonth() &&
-      selectedDate.getDate() === dateToCheck.getDate() &&
-      selectedDate.getDay() === dateToCheck.getDay()
-    );
-  }
+  // function checkSelectedDateEquality(day, date) {
+  //   const dateToCheck = date || new Date(new Date(visibleDate).setDate(day));
+  //   return (
+  //     selectedDate &&
+  //     selectedDate.getFullYear() === dateToCheck.getFullYear() &&
+  //     selectedDate.getMonth() === dateToCheck.getMonth() &&
+  //     selectedDate.getDate() === dateToCheck.getDate() &&
+  //     selectedDate.getDay() === dateToCheck.getDay()
+  //   );
+  // }
 
-  function getDaysInMonth() {
-    const days = new Date(
-      visibleDate.getFullYear(),
-      visibleDate.getMonth() + 1,
-      0
-    ).getDate();
-    return days;
-  }
+  // function getDaysInMonth() {
+  //   const days = new Date(
+  //     visibleDate.getFullYear(),
+  //     visibleDate.getMonth() + 1,
+  //     0
+  //   ).getDate();
+  //   return days;
+  // }
 
   // MANAGE SELECTOR
-  function moveSelector(spot) {
-    if (!selectorShown) {
-      setSelectorShown(checkSelectorDisplay());
-    }
-    const position = spot.getBoundingClientRect();
-    const calpos = calendarRef.current.getBoundingClientRect();
-    selector.current.style.transition = "all 150ms ease, background 150ms ease";
-    selector.current.style.opacity = "1";
-    selector.current.style.top = `${position.top -
-      calpos.top +
-      (window.innerWidth > 1080 ? 5 : 2)}px`;
-    selector.current.style.left = `${position.left -
-      calpos.left +
-      (window.innerWidth > 1080 ? 5 : 2)}px`;
-    setTimeout(() => {
-      selector.current.style.transition = "background 150ms ease";
-    }, 150);
-  }
+  // function moveSelector(spot) {
+  //   if (!selectorShown) {
+  //     setSelectorShown(checkSelectorDisplay());
+  //   }
+  //   const position = spot.getBoundingClientRect();
+  //   const calpos = calendarRef.current.getBoundingClientRect();
+  //   selector.current.style.transition = "all 150ms ease, background 150ms ease";
+  //   selector.current.style.opacity = "1";
+  //   selector.current.style.top = `${position.top -
+  //     calpos.top +
+  //     (window.innerWidth > 1080 ? 5 : 2)}px`;
+  //   selector.current.style.left = `${position.left -
+  //     calpos.left +
+  //     (window.innerWidth > 1080 ? 5 : 2)}px`;
+  //   setTimeout(() => {
+  //     selector.current.style.transition = "background 150ms ease";
+  //   }, 150);
+  // }
 
   function startCountdown() {
     const newCountdown = {
