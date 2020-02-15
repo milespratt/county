@@ -35,9 +35,7 @@ export default function Calendar({
   // REFS
   const selector = useRef(null);
   const calendarRef = useRef(null);
-  const dayRefs = useRef(
-    new Array(getDaysInMonth()).fill(undefined).map(() => createRef())
-  );
+  const dayRefs = useRef(new Array(31).fill(undefined).map(() => createRef()));
 
   // LIFECYCLE
   useEffect(() => {
