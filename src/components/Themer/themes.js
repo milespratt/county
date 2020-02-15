@@ -1,0 +1,72 @@
+export const themeList = {
+  Default: {
+    "Theme Name": "Default",
+    "Background Color": "white",
+    "Button Color": "white",
+    "Button Text": "black",
+    "Control Color": "black",
+    "Title Color": "black",
+    "Label Color": "black",
+    "Inactive Color": "gray",
+    "Active Color": "tomato",
+    "Default Color": "black",
+    "Selected Color": "white",
+    "Highlight Color": "tomato"
+  },
+  "Fall Feelings": {
+    "Theme Name": "Fall Feelings",
+    "Background Color": "#546A76",
+    "Button Color": "#546A76",
+    "Button Text": "#233042",
+    "Control Color": "#233042",
+    "Title Color": "#EF946C",
+    "Label Color": "#96BDC6",
+    "Inactive Color": "#9F7E69",
+    "Active Color": "#FFE8D1",
+    "Default Color": "#96BDC6",
+    "Selected Color": "#233042",
+    "Highlight Color": "#EF946C"
+  },
+  "Pink Passion": {
+    "Theme Name": "Pink Passion",
+    "Background Color": "#FC8E88",
+    "Button Color": "#FC8E88",
+    "Button Text": "#9ceaed",
+    "Control Color": "#9ceaed",
+    "Title Color": "#775675",
+    "Label Color": "#c5d86d",
+    "Inactive Color": "#e2d0d3",
+    "Active Color": "#775675",
+    "Default Color": "#f4fec1",
+    "Selected Color": "#775675",
+    "Highlight Color": "#d8ef73"
+  },
+  "Pop Slate": {
+    "Theme Name": "Pop Slate",
+    "Background Color": "#636363",
+    "Button Color": "#636363",
+    "Button Text": "#2A94C1",
+    "Control Color": "#2A94C1",
+    "Title Color": "#FAB3A9",
+    "Label Color": "#C3DFE0",
+    "Inactive Color": "#8C8888",
+    "Active Color": "#FAB3A9",
+    "Default Color": "#D6D1CF",
+    "Selected Color": "#F4E285",
+    "Highlight Color": "#2A94C1"
+  },
+  "Little Mermaid": {
+    "Theme Name": "Little Mermaid",
+    "Background Color": "#A9DDD6",
+    "Button Color": "#A9DDD6",
+    "Button Text": "#56445D",
+    "Control Color": "#56445D",
+    "Title Color": "#378591",
+    "Label Color": "#D3F8E2",
+    "Inactive Color": "#75BBA7",
+    "Active Color": "#C1B8C8",
+    "Default Color": "#F9F4F5",
+    "Selected Color": "#56445D",
+    "Highlight Color": "#C1B8C8"
+  }
+};
